@@ -1,7 +1,13 @@
 /*
-@author 
-@date 2021-
+@author Cody
+@date 2021-10-06
 
+code planning:
+    circle, point, and line
+    second circle on first
+    for loop on n
+    n slider
+    sawtooth wave
  */
 let font
 
