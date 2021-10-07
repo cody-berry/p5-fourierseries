@@ -12,9 +12,10 @@ code planning:
  */
 let font
 let time = 0
-let originalR = 25
+let originalR = 10
 let r
 let n = -1
+let wave = []
 
 function preload() {
     font = loadFont('fonts/Meiryo-01.ttf')
@@ -31,18 +32,34 @@ function draw() {
     noFill()
     stroke(0, 0, 100)
     r = 4*originalR
+    let x=0
+    let y=0
+    let prevX, prevY
     // let's put n in a for loop!
-    for (let n = 1; n < 10; n+=2) {
-        circle(0, 0, r * 2)
+    for (let n = 1; n < 1620; n+=0) {
+        prevX = x
+        prevY = y
+        circle(prevX, prevY, r * 2)
         // now let's draw the point! First, we need to define where it is, and
         // update n.
-        let x = r * cos(n*time / 100)
-        let y = r * sin(n*time / 100)
+        x += r * cos(n*time / 100)
+        y += r * sin(n*time / 100)
         // Then, we can draw a line from the center of our circle to our point,
         // which is actually going to be another circle.
-        line(0, 0, x, y)
-        translate(x, y)
-        r = 4*originalR/n
+        line(prevX, prevY, x, y)
+        n+=2
+        r = 4*originalR/(n)
+    }
+    wave.unshift(y)
+    // we'll want to draw the wave
+    beginShape()
+    for (let i = 0; i < wave.length; i++) {
+        vertex(i+16*originalR, wave[i])
+    }
+    endShape()
+    line(x, y, 16*originalR, wave[0])
+    if (wave.length > 315) {
+        wave.pop()
     }
     time++
 }
