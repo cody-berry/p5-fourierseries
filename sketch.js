@@ -6,7 +6,7 @@ code planning:
 .   circle, point, and line
 .   second circle on first
 .   for loop on n
-    wave
+.   wave
     n slider
     sawtooth wave
  */
@@ -16,6 +16,7 @@ let originalR = 10
 let r
 let n = -1
 let wave = []
+let maxN
 
 function preload() {
     font = loadFont('fonts/Meiryo-01.ttf')
@@ -23,7 +24,8 @@ function preload() {
 
 function setup() {
     createCanvas(640, 360)
-    colorMode(HSB, 360, 100, 100, 100)
+    colorMode(HSB, 360, 100, 100, 0)
+    maxN = createSlider(10, 100, 10, 5)
 }
 
 function draw() {
@@ -36,7 +38,7 @@ function draw() {
     let y=0
     let prevX, prevY
     // let's put n in a for loop!
-    for (let n = 1; n < 1620; n+=0) {
+    for (let n = 1; n < maxN.value(); n+=0) {
         prevX = x
         prevY = y
         circle(prevX, prevY, r * 2)
