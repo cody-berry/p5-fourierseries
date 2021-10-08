@@ -30,7 +30,7 @@ function setup() {
     createCanvas(640, 360)
     colorMode(HSB, 360, 100, 100, 100)
     maxN = createSlider(1, 21)
-    speed = createSlider(0.01, 0.5, 0.3, 0.01)
+    speed = createSlider(0, 0.2, 0.05, 0.01)
 }
 
 console.log("🐳")
@@ -49,8 +49,11 @@ function draw() {
     for (let i=0; i < maxN.value(); i++) {
         prevX = x
         prevY = y
-        pos = squareWave(i, new p5.Vector(prevX, prevY), time)
+        pos = sawtoothWave(i, time)
+        stroke(0, 0, 100, 30)
+        circle(prevX, prevY, r * 2)
 
+        // and we draw a line from our start to the end.
         stroke(0, 0, 100)
         line(prevX, prevY, pos.x, pos.y)
     }
@@ -74,11 +77,9 @@ function draw() {
     text("speed: " + str(speed.value()) + ", maxN: " + str(maxN.value()), 60, 30)
 }
 
-function squareWave(i, prevPos, time) {
+function squareWave(i, time) {
     n = 2*i + 1
     r = 4*originalR/(n)
-    stroke(0, 0, 100, 30)
-    circle(prevPos.x, prevPos.y, r * 2)
 
     // now let's draw the point! First, we need to define where it is, and
     // update n.
@@ -86,5 +87,21 @@ function squareWave(i, prevPos, time) {
     y += r * sin(n*time)
 
     // and actually, we need to return the point.
+    return new p5.Vector(x, y)
+}
+
+function sawtoothWave(i, time) {
+    n = i + 1
+    if (n % 2 === 0) {
+        r = 4*originalR/(n)
+    } else {
+        r = -4*originalR/(n)
+    }
+
+    // we need to define where our point is.
+    x += r * cos(n*time)
+    y += r * sin(n*time)
+
+    // and we return it.
     return new p5.Vector(x, y)
 }
