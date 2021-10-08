@@ -18,6 +18,9 @@ let n = -1
 let wave = []
 let maxN
 let speed
+let x=0
+let y=0
+let pos
 
 function preload() {
     font = loadFont('fonts/Meiryo-01.ttf')
@@ -27,7 +30,7 @@ function setup() {
     createCanvas(640, 360)
     colorMode(HSB, 360, 100, 100, 100)
     maxN = createSlider(1, 21)
-    speed = createSlider(0.01, 0.5, 0.02, 0.01)
+    speed = createSlider(0.01, 0.5, 0.3, 0.01)
 }
 
 console.log("🐳")
@@ -38,30 +41,18 @@ function draw() {
     noFill()
     stroke(0, 0, 100)
     r = 4*originalR
-    let x=0
-    let y=0
     let prevX, prevY
+    x = 0
+    y = 0
 
     // let's put n in a for loop!
-    for (let i=0; i < maxN.value(); i+=1) {
-
-        let n = 2*i + 1
+    for (let i=0; i < maxN.value(); i++) {
         prevX = x
         prevY = y
-        r = 4*originalR/(n)
-        stroke(0, 0, 100, 30)
-        circle(prevX, prevY, r * 2)
-
-        // now let's draw the point! First, we need to define where it is, and
-        // update n.
-        x += r * cos(n*time)
-        y += r * sin(n*time)
-
-        // Then, we can draw a line from the center of our circle to our point,
-        // which is actually going to be another circle.
+        pos = squareWave(i, new p5.Vector(prevX, prevY), time)
 
         stroke(0, 0, 100)
-        line(prevX, prevY, x, y)
+        line(prevX, prevY, pos.x, pos.y)
     }
 
     wave.unshift(y)
@@ -79,4 +70,21 @@ function draw() {
         wave.pop()
 
     time += speed.value()
+    translate(-width/4, -height/2)
+    text("speed: " + str(speed.value()) + ", maxN: " + str(maxN.value()), 60, 30)
+}
+
+function squareWave(i, prevPos, time) {
+    n = 2*i + 1
+    r = 4*originalR/(n)
+    stroke(0, 0, 100, 30)
+    circle(prevPos.x, prevPos.y, r * 2)
+
+    // now let's draw the point! First, we need to define where it is, and
+    // update n.
+    x += r * cos(n*time)
+    y += r * sin(n*time)
+
+    // and actually, we need to return the point.
+    return new p5.Vector(x, y)
 }
