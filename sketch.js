@@ -84,7 +84,7 @@ function squareWave(i, time) {
     // now let's draw the point! First, we need to define where it is, and
     // update n.
     x += r * cos(n*time)
-    y += r * sin(n*time)
+    y -= r * sin(n*time)
 
     // and actually, we need to return the point.
     return new p5.Vector(x, y)
@@ -100,7 +100,7 @@ function sawtoothWave(i, time) {
 
     // we need to define where our point is.
     x += r * cos(n*time)
-    y += r * sin(n*time)
+    y -= r * sin(n*time)
 
     // and we return it.
     return new p5.Vector(x, y)
